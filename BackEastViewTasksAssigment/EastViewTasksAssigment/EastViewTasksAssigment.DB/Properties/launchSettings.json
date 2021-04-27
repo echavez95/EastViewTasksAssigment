@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EastViewTasksAssigment.DB": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
