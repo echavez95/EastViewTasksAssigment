@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EastViewTasksAssignment.DB.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20210427231229_CreatingDB")]
-    partial class CreatingDB
+    [Migration("20210428001512_AddingFieldCitizenAlive")]
+    partial class AddingFieldCitizenAlive
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,6 +27,9 @@ namespace EastViewTasksAssignment.DB.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("citizenAlive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("citizenIdCard")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
@@ -40,6 +43,10 @@ namespace EastViewTasksAssignment.DB.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.HasKey("citizenId");
+
+                    b.HasIndex("citizenIdCard")
+                        .IsUnique()
+                        .HasFilter("[citizenIdCard] IS NOT NULL");
 
                     b.ToTable("Citizens");
                 });

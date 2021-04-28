@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace EastViewTasksAssigment.DB.Tables
+namespace EastViewTasksAssignment.DB.Tables
 {
     [Table("Citizens")]
     public class Citizens
@@ -18,7 +18,7 @@ namespace EastViewTasksAssigment.DB.Tables
         public string citizenName { get; set; }
         [MaxLength(200)]
         public string citizenLastName { get; set; }
-
+        public bool citizenAlive { get; set; }
         public List<Tasks> Tasks { get; set; }
     }
 }

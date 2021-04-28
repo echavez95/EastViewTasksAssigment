@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace EastViewTasksAssigment.DB.Tables
+namespace EastViewTasksAssignment.DB.Tables
 {
     [Table("Tasks")]
     public class Tasks

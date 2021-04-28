@@ -1,9 +1,9 @@
-﻿using EastViewTasksAssigment.DB.Tables;
+﻿using EastViewTasksAssignment.DB.Tables;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
 
-namespace EastViewTasksAssigment.DB
+namespace EastViewTasksAssignment.DB
 {
     public class DBContext : DbContext 
     {

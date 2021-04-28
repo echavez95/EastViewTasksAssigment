@@ -1,4 +1,4 @@
-﻿using EastViewTasksAssigment.DB.Tables;
+﻿using EastViewTasksAssignment.DB.Tables;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EastViewTasksAssigment.DB
+namespace EastViewTasksAssignment.DB
 {
     public class DBModel
     {
@@ -21,6 +21,12 @@ namespace EastViewTasksAssigment.DB
         {
             return await context.Citizens.FirstOrDefaultAsync(c=>c.citizenId == citizenId);
         }
+
+        public async Task<Citizens> getCitizenByIdCard(string citizenIdCard)
+        {
+            return await context.Citizens.FirstOrDefaultAsync(c => c.citizenIdCard == citizenIdCard);
+        }
+
         public async Task<List<Citizens>> getCitizensList()
         {
             return await context.Citizens.ToListAsync();
@@ -32,12 +38,12 @@ namespace EastViewTasksAssigment.DB
             await context.SaveChangesAsync();
         }
 
-        public async Task updateCitizen(long citizenId, Citizens editedRecord)
+        public async Task updateCitizen(Citizens editedRecord)
         {
-            Citizens citizen = await getCitizen(citizenId);
+            Citizens citizen = await getCitizen(editedRecord.citizenId);
             citizen.citizenIdCard = editedRecord.citizenIdCard;
             citizen.citizenName = editedRecord.citizenName;
-            citizen.citizenName = editedRecord.citizenLastName;
+            citizen.citizenLastName = editedRecord.citizenLastName;
 
             context.Citizens.Update(citizen);
             await context.SaveChangesAsync();
@@ -47,6 +53,14 @@ namespace EastViewTasksAssigment.DB
         {
             Citizens citizen = await getCitizen(citizenId);
             context.Citizens.Remove(citizen);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task toggleCitizenAlive(long citizenId)
+        {
+            Citizens citizen = await getCitizen(citizenId);
+            citizen.citizenAlive = !citizen.citizenAlive;
+            context.Citizens.Update(citizen);
             await context.SaveChangesAsync();
         }
         #endregion
@@ -67,9 +81,9 @@ namespace EastViewTasksAssigment.DB
             await context.SaveChangesAsync();
         }
 
-        public async Task updateTask(long taskId, Tasks editedRecord)
+        public async Task updateTask(Tasks editedRecord)
         {
-            Tasks task = await getTask(taskId);
+            Tasks task = await getTask(editedRecord.taskId);
             task.taskDay = editedRecord.taskDay;
             task.taskDescription = editedRecord.taskDescription;
             task.taskCitizenId = editedRecord.taskCitizenId;

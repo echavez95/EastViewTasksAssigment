@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EastViewTasksAssigment.DB.Migrations
+namespace EastViewTasksAssignment.DB.Migrations
 {
     public partial class AddingUniqueKeyCitizen : Migration
     {

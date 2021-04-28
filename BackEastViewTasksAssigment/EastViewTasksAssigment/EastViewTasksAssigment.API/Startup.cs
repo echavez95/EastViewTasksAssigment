@@ -1,4 +1,4 @@
-using EastViewTasksAssigment.DB;
+using EastViewTasksAssignment.DB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,8 +14,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Design;
+using Newtonsoft.Json;
 
-namespace EastViewTasksAssigment.API
+namespace EastViewTasksAssignment.API
 {
     public class Startup
     {
@@ -32,7 +33,16 @@ namespace EastViewTasksAssigment.API
             services.AddDbContext<DBContext>(options =>
                             options.UseSqlServer(Configuration.GetConnectionString("DBContext")));
 
+            services.AddMvc().AddJsonOptions(opt => opt.JsonSerializerOptions.PropertyNamingPolicy = null);
+
             services.AddControllers();
+
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +52,7 @@ namespace EastViewTasksAssigment.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("MyPolicy");
 
             app.UseHttpsRedirection();
 
