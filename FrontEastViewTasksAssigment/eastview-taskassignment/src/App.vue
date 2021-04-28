@@ -7,6 +7,7 @@
       <ul class="right hide-on-med-and-down">
         <li><router-link to="/">Inicio</router-link></li>
         <li><router-link to="/citizens">Cuidadanos</router-link></li>
+        <li><router-link to="/tasks">Tareas</router-link></li>
       </ul>
     </div>
   </nav>
@@ -15,6 +16,7 @@
     <div class="collection">
       <router-link to="/" class="collection-item">Inicio</router-link>
       <router-link to="/citizens" class="collection-item">Cuidadanos</router-link>
+      <router-link to="/tasks" class="collection-item">Tareas</router-link>
     </div>
   </div>
   <div class="container">

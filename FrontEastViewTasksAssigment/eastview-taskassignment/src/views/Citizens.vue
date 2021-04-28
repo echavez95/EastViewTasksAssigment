@@ -6,16 +6,16 @@
                     <span class="card-title">Registro de Ciudadanos</span>
                     <div class="row">
                         <div class="col s12">
-                            <form>
+                            <form autocomplete="off">
                                 <div class="row">
                                     <div class="input-field col s12 m6 l6">
-                                        <Matinput id="idcard" type="text" label="No. Identidad" v-model.trim="citizen.citizenIdCard"></Matinput>
+                                        <Matinput ref="citizenIdCard" id="idcard" type="text" label="No. Identidad" v-model.trim="citizen.citizenIdCard"></Matinput>
                                     </div>
                                     <div class="input-field col s12 m6 l6">
-                                        <Matinput id="name" type="text" label="Nombre" v-model.trim="citizen.citizenName"></Matinput>
+                                        <Matinput ref="citizenName" id="name" type="text" label="Nombre" v-model.trim="citizen.citizenName"></Matinput>
                                     </div>
                                     <div class="input-field col s12 m6 l6">
-                                        <Matinput id="lastname" type="text" label="Apellido" v-model.trim="citizen.citizenLastName"></Matinput>
+                                        <Matinput ref="citizenLastName" id="lastname" type="text" label="Apellido" v-model.trim="citizen.citizenLastName"></Matinput>
                                     </div>
                                 </div>
                             </form>
@@ -78,6 +78,7 @@
 import Matinput from '../components/Matinput.vue'
 import axios from 'axios'
 import { apiRoute } from '../config/apiRoute'
+import { showAlert } from '../functions/alert'
 
 export default {
     name: "Citizens",
@@ -98,27 +99,15 @@ export default {
         this.getCitizensList()
     },
     methods: {
-        showAlert(message, type){
-            M.toast({ 
-                html: message,
-                classes: type === 'success' ? 'green' : 'red'
-            });
-        },
         clearCitizen(ask) {
+            var resp;
             if(ask){
-                let resp = confirm('Se perderan los datos no guardados, continuar?');
-                if(resp) {
-                    this.citizen = {
-                        citizenId: 0,
-                        citizenIdCard: '',
-                        citizenName: '',
-                        citizenLastName: '',
-                        citizenAlive: true
-                    }
-                    M.updateTextFields();
-                }
+                resp = confirm('Se perderan los datos no guardados, continuar?');
+            } else {
+                resp = true;
             }
-            else {
+
+            if(resp){
                 this.citizen = {
                     citizenId: 0,
                     citizenIdCard: '',
@@ -126,17 +115,30 @@ export default {
                     citizenLastName: '',
                     citizenAlive: true
                 }
-                M.updateTextFields();
+                
+                this.$refs.citizenIdCard.resetInput();
+                this.$refs.citizenName.resetInput();
+                this.$refs.citizenLastName.resetInput();
             }
-            
         },
         async saveCitizen() {
-            const { data }  = await axios.post(`${apiRoute}/Citizens/saveCitizen`, this.citizen);
-            if(data.type==='success') {
-                this.getCitizensList();
-                this.clearCitizen(false);
+            if(this.citizen.citizenIdCard.trim() === '') {
+                this.$refs.citizenIdCard.focusInput();
+                this.$refs.citizenIdCard.setErrorMessage('Escriba el No. de Identidad');
+            } else if(this.citizen.citizenName.trim() === '') {
+                this.$refs.citizenName.focusInput();
+                this.$refs.citizenName.setErrorMessage('Escriba el Nombre');
+            } else if(this.citizen.citizenLastName.trim() === '') {
+                this.$refs.citizenLastName.focusInput();
+                this.$refs.citizenLastName.setErrorMessage('Escriba el Apellido');
+            } else {
+                const { data }  = await axios.post(`${apiRoute}/Citizens/saveCitizen`, this.citizen);
+                if(data.type==='success') {
+                    this.getCitizensList();
+                    this.clearCitizen(false);
+                }
+                showAlert(data.message, data.type);
             }
-            this.showAlert(data.message, data.type);
         },
         async getCitizensList(){
            const { data } = await axios.get(`${apiRoute}/Citizens/getCitizensList`).catch(error => { alert(error.message) });
@@ -144,24 +146,24 @@ export default {
                 this.citizensList = data.message
             }
             else {
-                this.showAlert(data.message, 'error');
+                showAlert(data.message, 'error');
             }
         },
         async getCitizen(citizenId){
             const { data } = await axios.get(`${apiRoute}/Citizens/getCitizen?citizenId=${citizenId}`).catch(error => { alert(error.message) });
             if(data.type === 'success') {
+                this.clearCitizen(false);
                 this.citizen = data.message;
-                M.updateTextFields();
             }
             else {
-                this.showAlert(data.message, 'error');
+                showAlert(data.message, 'error');
             }
         },
         async deleteCitizen(citizenId){
             let resp = confirm('Seguro que desea eliminar el registro? Se eliminaran tambien las tareas asignadas');
             if(resp) {
                 const { data } = await axios.delete(`${apiRoute}/Citizens/deleteCitizen?citizenId=${citizenId}`).catch(error => { alert(error.message) });
-                this.showAlert(data.message, data.type);
+                showAlert(data.message, data.type);
                 if(data.type === 'success') {
                     this.getCitizensList();
                 }
@@ -169,11 +171,11 @@ export default {
         },
         async toggleCitizenAlive(citizenId){
             const { data } = await axios.put(`${apiRoute}/Citizens/toggleCitizenAlive?citizenId=${citizenId}`).catch(error => { alert(error.message) });
-            this.showAlert(data.message, data.type);
+            showAlert(data.message, data.type);
             if(data.type === 'success') {
                 this.getCitizensList();
             }
-        },
+        }
     }
 }
 </script>
