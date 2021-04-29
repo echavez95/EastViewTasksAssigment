@@ -15,6 +15,7 @@ namespace EastViewTasksAssignment.DB.Tables
         public byte taskDay { get; set; }
         [MaxLength(300)]
         public string taskDescription { get; set; }
+        public TimeSpan taskTime { get; set; }
 
         public long taskCitizenId { get; set; }
         public Citizens Citizen { get; set; }

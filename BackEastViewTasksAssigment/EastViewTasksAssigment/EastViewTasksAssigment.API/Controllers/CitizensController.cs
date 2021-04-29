@@ -137,6 +137,29 @@ namespace EastViewTasksAssignment.API.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<JsonResult> getCitizensListWithTasksByDay(byte weekDay)
+        {
+            try
+            {
+                List<Citizens> list = await model.getCitizensListWithTasksByDay(weekDay);
+
+                return new JsonResult(new
+                {
+                    type = "success",
+                    message = list.Where(c=>c.Tasks.Count>0).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new
+                {
+                    type = "error",
+                    message = e.InnerException != null ? e.InnerException.Message.ToString() : e.Message.ToString()
+                });
+            }
+        }
+
         [HttpDelete]
         public async Task<JsonResult> deleteCitizen(long citizenId)
         {

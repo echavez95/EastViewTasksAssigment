@@ -94,7 +94,7 @@ namespace EastViewTasksAssignment.API.Controllers
                 return new JsonResult(new
                 {
                     type = "success",
-                    message = list.OrderBy(x=>x.taskDay).ToList()
+                    message = list.OrderBy(x=>x.taskDay).ThenBy(x=>x.taskTime).ToList()
                 });
             }
             catch (Exception e)
@@ -141,63 +141,5 @@ namespace EastViewTasksAssignment.API.Controllers
             }
         }
 
-        [HttpGet]
-        public JsonResult weekDays()
-        {
-            try
-            {
-                List<WeekDay> DiasSemana = new List<WeekDay>();
-                DiasSemana.Add(new WeekDay()
-                {
-                    DayNumber = (byte)DayOfWeek.Monday,
-                    DayName = "Lunes"
-                });
-                DiasSemana.Add(new WeekDay()
-                {
-                    DayNumber = (byte)DayOfWeek.Tuesday,
-                    DayName = "Martes"
-                });
-                DiasSemana.Add(new WeekDay()
-                {
-                    DayNumber = (byte)DayOfWeek.Wednesday,
-                    DayName = "Miercoles"
-                });
-                DiasSemana.Add(new WeekDay()
-                {
-                    DayNumber = (byte)DayOfWeek.Thursday,
-                    DayName = "Jueves"
-                });
-                DiasSemana.Add(new WeekDay()
-                {
-                    DayNumber = (byte)DayOfWeek.Friday,
-                    DayName = "Viernes"
-                });
-                DiasSemana.Add(new WeekDay()
-                {
-                    DayNumber = (byte)DayOfWeek.Saturday,
-                    DayName = "Sábado"
-                });
-                DiasSemana.Add(new WeekDay()
-                {
-                    DayNumber = (byte)DayOfWeek.Sunday,
-                    DayName = "Domingo"
-                });
-
-                return new JsonResult(new
-                {
-                    type = "success",
-                    message = DiasSemana
-                });
-                
-            }
-            catch (Exception e)
-            {
-                return new JsonResult(new
-                {
-                    type = "error",
-                    message = e.InnerException != null ? e.InnerException.Message.ToString() : e.Message.ToString()
-                });
-            }
-        }
     }
 }

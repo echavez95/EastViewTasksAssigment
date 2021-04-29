@@ -8,15 +8,18 @@
         <li><router-link to="/">Inicio</router-link></li>
         <li><router-link to="/citizens">Cuidadanos</router-link></li>
         <li><router-link to="/tasks">Tareas</router-link></li>
+        <li><router-link to="/viewtasks">Consultar Tareas</router-link></li>
       </ul>
     </div>
   </nav>
 
   <div class="sidenav" id="mobile-demo">
+    <h4 class="center">East View</h4>
     <div class="collection">
-      <router-link to="/" class="collection-item">Inicio</router-link>
-      <router-link to="/citizens" class="collection-item">Cuidadanos</router-link>
-      <router-link to="/tasks" class="collection-item">Tareas</router-link>
+      <router-link to="/" class="collection-item sidenav-close">Inicio</router-link>
+      <router-link to="/citizens" class="collection-item sidenav-close">Cuidadanos</router-link>
+      <router-link to="/tasks" class="collection-item sidenav-close">Tareas</router-link>
+      <router-link to="/viewtasks" class="collection-item sidenav-close">Consultar Tareas</router-link>
     </div>
   </div>
   <div class="container">

@@ -32,6 +32,11 @@ namespace EastViewTasksAssignment.DB
             return await context.Citizens.ToListAsync();
         }
 
+        public async Task<List<Citizens>> getCitizensListWithTasksByDay(byte weekDay)
+        {
+            return await context.Citizens.Include(x=>x.Tasks.Where(x=>x.taskDay == weekDay)).ToListAsync();
+        }
+
         public async Task addCitizen(Citizens newRecord)
         {
             await context.Citizens.AddAsync(newRecord);
@@ -87,6 +92,7 @@ namespace EastViewTasksAssignment.DB
             task.taskDay = editedRecord.taskDay;
             task.taskDescription = editedRecord.taskDescription;
             task.taskCitizenId = editedRecord.taskCitizenId;
+            task.taskTime = editedRecord.taskTime;
 
             context.Tasks.Update(task);
             await context.SaveChangesAsync();

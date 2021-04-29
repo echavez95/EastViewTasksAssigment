@@ -15,6 +15,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Design;
 using Newtonsoft.Json;
+using System.Net.Http.Formatting;
+using Newtonsoft.Json.Serialization;
 
 namespace EastViewTasksAssignment.API
 {
@@ -27,15 +29,17 @@ namespace EastViewTasksAssignment.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DBContext>(options =>
                             options.UseSqlServer(Configuration.GetConnectionString("DBContext")));
 
             services.AddMvc().AddJsonOptions(opt => opt.JsonSerializerOptions.PropertyNamingPolicy = null);
-
+            
             services.AddControllers();
+
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
@@ -45,8 +49,7 @@ namespace EastViewTasksAssignment.API
             }));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DBContext db)
         {
             if (env.IsDevelopment())
             {
@@ -64,6 +67,8 @@ namespace EastViewTasksAssignment.API
             {
                 endpoints.MapControllers();
             });
+
+            db.Database.Migrate();
         }
     }
 }

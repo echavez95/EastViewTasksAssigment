@@ -49,6 +49,7 @@
                                 <th>Vivo?</th>
                                 <th>Editar</th>
                                 <th>Eliminar</th>
+                                <th>Tareas</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,6 +66,9 @@
                                 </td>
                                 <td>
                                     <div class="waves-effect waves-light btn-small red"  @click="deleteCitizen(c.citizenId)"><i class="material-icons">delete_forever</i></div>
+                                </td>
+                                <td>
+                                    <router-link :to="'/tasks/' + c.citizenId" class="waves-effect waves-light btn-small grey"><i class="material-icons">assignment_turned_in</i></router-link>
                                 </td>
                             </tr>
                         </tbody>
@@ -179,5 +183,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-</style>
