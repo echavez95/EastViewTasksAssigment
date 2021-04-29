@@ -1,5 +1,4 @@
 ﻿using EastViewTasksAssignment.DB;
-using EastViewTasksAssignment.DB.Classes;
 using EastViewTasksAssignment.DB.Tables;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
