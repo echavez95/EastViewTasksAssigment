@@ -1,0 +1,3 @@
+Para ejecutar la migracion y crear la base de datos:
+
+dotnet ef --startup-project ..\EastViewTasksAssigment.API database update
